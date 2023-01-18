@@ -13,7 +13,7 @@ import { AppService } from './app.service';
           urls: ['amqp://localhost:5672'],
           queue: 'main_queue',
           queueOptions: {
-            durable: false
+            durable: true
           },
         },
       },

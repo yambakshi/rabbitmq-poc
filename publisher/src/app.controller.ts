@@ -8,6 +8,7 @@ export class AppController {
 
   @Get()
   getHello(): Promise<Observable<string>> {
+    console.log('Received GET / request');
     return this.appService.getHelloAck();
   }
 }

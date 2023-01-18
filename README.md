@@ -51,7 +51,7 @@
    
 ## Links
 - [Fireship - NestJS](https://www.youtube.com/watch?v=0M8AYU_hPas&t=33s&ab_channel=Fireship)
-- [Fireship - RabbiMQ](https://www.youtube.com/watch?v=NQ3fZtyXji0&ab_channel=Fireship)
+- [Fireship - RabbitMQ](https://www.youtube.com/watch?v=NQ3fZtyXji0&ab_channel=Fireship)
 - [NestJS Microservice Full Course](https://www.youtube.com/watch?v=IsubcKdZPyE&t=2004s)
 - [How to create a NestJS RabbitMQ Microservice?](https://progressivecoder.com/how-to-create-a-nestjs-rabbitmq-microservice/)
 - [NestJS - RabbitMQ](https://docs.nestjs.com/microservices/rabbitmq)

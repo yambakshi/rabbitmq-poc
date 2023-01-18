@@ -10,13 +10,13 @@ async function bootstrap() {
       queue: 'main_queue',
       noAck: false,
       queueOptions: {
-        durable: false
-      },
+        durable: true
+      }
     },
   });
 
   app.listen().then(() => {
-    console.log('Microservice is listening')
+    console.log('Consumer microservice is listening')
   })
 }
 bootstrap();
