@@ -1,0 +1,1 @@
+export { RabbitMQConsumer } from './rabbitmq-consumer.service';

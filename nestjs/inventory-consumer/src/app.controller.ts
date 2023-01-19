@@ -28,4 +28,9 @@ export class AppController {
   async handleBookCreatedEvent(data: Record<string, unknown>) {
     console.log(data);
   }
+
+  @EventPattern('inventory.info')
+  async handleInventoryEvent(data: Record<string, unknown>) {
+    console.log(data);
+  }
 }

@@ -56,3 +56,5 @@
 - [How to create a NestJS RabbitMQ Microservice?](https://progressivecoder.com/how-to-create-a-nestjs-rabbitmq-microservice/)
 - [NestJS - RabbitMQ](https://docs.nestjs.com/microservices/rabbitmq)
 - [NestJS - Microservices](https://docs.nestjs.com/microservices/basics#client)
+- [Topics - NodeJS](https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html)
+- [Consumer Acknowledgements and Publisher Confirms](https://www.rabbitmq.com/confirms.html#acknowledgement-modes)

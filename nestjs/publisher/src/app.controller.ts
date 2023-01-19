@@ -1,14 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Controller } from '@nestjs/common';
+import { Body, Post } from '@nestjs/common/decorators';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): Promise<Observable<string>> {
-    console.log('Received GET / request');
-    return this.appService.getHelloAck();
+  @Post()
+  postEvent(@Body() body: { routingKey: string, message: any }): Promise<boolean> {
+    return this.appService.publishEvent(body);
   }
 }
