@@ -5,11 +5,11 @@ import { RabbitMQTransporter } from './transporters';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    strategy: new RabbitMQTransporter('iot_events', 'inventory.info', 'inventory_queue')
+    strategy: new RabbitMQTransporter('iot_events', 'notifications.info', 'notifications_queue')
   });
 
   app.listen().then(() => {
-    console.log('Inventory consumer microservice is listening');
+    console.log('Notifications consumer microservice is listening');
   })
 }
 bootstrap();
