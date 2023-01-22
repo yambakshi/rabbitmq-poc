@@ -21,7 +21,7 @@ export class RabbitMQPublisher {
         });
     }
 
-    publish(message: any, routingKey: string): boolean {
+    publish({ routingKey, message }: { routingKey: string, message: any }): boolean {
         return this.channel.publish(this.exchange, routingKey, Buffer.from(message));
     }
 }

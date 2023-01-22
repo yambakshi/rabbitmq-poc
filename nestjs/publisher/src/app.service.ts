@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { RabbitMQPublisher } from './services';
+import { RabbitMQPublisher } from './modules/rabbitmq/rabbitmq-publisher.service';
 
 @Injectable()
 export class AppService {
   constructor(private readonly rabbitMQPublisher: RabbitMQPublisher) { }
 
-  async publishEvent({ routingKey, message }: { routingKey: string, message: any }) {
-    console.log(`Publishing message: ${message} with routing key = ${routingKey}`)
-    return this.rabbitMQPublisher.publish(message, routingKey);
+  async publishEvent(event: { routingKey: string, message: any }) {
+    console.log(`Publishing message: ${event.message} with routing key = ${event.routingKey}`);
+    return this.rabbitMQPublisher.publish(event);
   }
 }

@@ -1,13 +1,14 @@
 import { Controller } from '@nestjs/common';
-import { Body, Post } from '@nestjs/common/decorators';
+import { Ctx, MessagePattern, MqttContext, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Post()
-  postEvent(@Body() body: { routingKey: string, message: any }): Promise<boolean> {
-    return this.appService.publishEvent(body);
+  @MessagePattern('greeting')
+  getNotifications(@Payload() data: any, @Ctx() context: MqttContext) {
+    console.log(`Topic: ${context.getTopic()}`);
+    this.appService.publishEvent(data);
   }
 }

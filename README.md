@@ -45,6 +45,37 @@
    npm install --save @types/amqplib
    ```
 
+## Mosquitto and MQTT
+1. `Docker` installation:
+   ```
+   docker run -d --name some-mosquito -p 1883:1883 eclipse-mosquitto
+   ```
+
+2. Configure `Mosquitto` in the `Docker` container
+   ```
+   vi /mosquitto/config/mosquitto.conf
+   ```
+
+   Look for the line
+   ```
+   #listener
+   ```
+
+   And change it to:
+   ```
+   listener 1883
+   allow_anonymous true
+   ```
+
+   This allows unauthenticated communication with the `Mosquitto` container
+   To learn more about `Mosquitto` authentication visit [the official documentation](https://mosquitto.org/documentation/authentication-methods/)
+
+3. Install `mqtt` npm package ([source](https://www.npmjs.com/package/mqtt))
+
+### Links
+- [Mosquitto Docker](https://hub.docker.com/_/eclipse-mosquitto)
+- [NestJS - MQTT](https://docs.nestjs.com/microservices/mqtt)
+
 ## Running
 1. Run both publisher and consumer project by pressing `F5`
 2. Send a `GET` request to `http://localhost:8000`
