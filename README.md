@@ -1,16 +1,16 @@
 # RabbitMQ POC
 This is a POC of the following flow:
-1. A `POST` request is sent to the `MQTT` publisher (listening on `http://localhost:3000`).
+1. A `POST` request is sent to a `MQTT` publisher (listening on `http://localhost:3000`).
 2. The `MQTT` publisher sends the body of the `POST` request as a `MQTT` message.
 3. The `RabbitMQ` publisher consumes the `MQTT` message and sends it as a `RabbitMQ` message.
 4. The `RabbitMQ` exchange (named `iot_events`) routes the message to the right queue based on the routing key.
 5. The `RabbitMQ` message is consumed by either the `Inventory Consumer` or the `Notifications Consumer`.
 
 The microservices in this demo are:
-- `MQTT` publisher - Acting both as REST API (listening on port 3000) and a `MQTT` publisher.
+- `MQTT` publisher - Acting both as a REST API (listening on port 3000) and a `MQTT` publisher.
 - `RabbitMQ` publisher - Acting as both a `MQTT` consumer and a `RabbitMQ` publisher.
-- Inventory Consumer - A `RabbitMQ` consumer listening on queue `inventory_queue`.
-- Notifications Consumer - A `RabbitMQ` consumer listening on queue `notifications_queue`.
+- Inventory Consumer - A `RabbitMQ` consumer listening on the `inventory_queue` queue.
+- Notifications Consumer - A `RabbitMQ` consumer listening on the `notifications_queue` queue.
 
 ## Technologies
 - NestJS `9.0.0`
@@ -127,6 +127,7 @@ The microservices in this demo are:
 - [NestJS - Microservices](https://docs.nestjs.com/microservices/basics)
 - [Topics - NodeJS](https://www.rabbitmq.com/tutorials/tutorial-five-javascript.html)
 - [Consumer Acknowledgements and Publisher Confirms](https://www.rabbitmq.com/confirms.html#acknowledgement-modes)
+- [Mosquitto Manual](https://mosquitto.org/man/mosquitto-8.html)
 - [NPM - NestJS Microservices](https://www.npmjs.com/package/@nestjs/microservices)
 - [NPM - MQTT](https://www.npmjs.com/package/mqtt)
 - [NPM - AMQP Lib](https://www.npmjs.com/package/amqplib)
