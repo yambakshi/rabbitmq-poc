@@ -13,9 +13,10 @@ export class RabbitMQPublisher {
 
     async connect(): Promise<void> {
         const connection = await connect('amqp://localhost:5672');
+        console.log('Connected to RabbitMQ');
+
         this.channel = await connection.createChannel();
         this.exchange = 'iot_events';
-
         this.channel.assertExchange(this.exchange, 'topic', {
             durable: true
         });

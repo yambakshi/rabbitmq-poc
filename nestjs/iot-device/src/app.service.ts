@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 export class AppService {
   constructor(@Inject('GREETING_SERVICE') private client: ClientProxy) { }
 
-  sendMqttMessage(msg): Observable<any> {
-    return this.client.send('greeting', msg);
+  sendMqttMessage(body: { routingKey: string, message: any }): Observable<any> {
+    console.log(`Sending message '${body.message}' (Routing Key = '${body.routingKey}') over MQTT`);
+    return this.client.send('greeting', body);
   }
 }

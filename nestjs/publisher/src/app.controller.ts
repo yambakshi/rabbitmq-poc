@@ -8,7 +8,7 @@ export class AppController {
 
   @MessagePattern('greeting')
   getNotifications(@Payload() data: any, @Ctx() context: MqttContext) {
-    console.log(`Topic: ${context.getTopic()}`);
-    this.appService.publishEvent(data);
+    console.log(`Received MQTT message (Topic = '${context.getTopic()}')`);
+    return this.appService.publishEvent(data);
   }
 }

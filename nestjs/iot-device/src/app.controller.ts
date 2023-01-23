@@ -8,6 +8,7 @@ export class AppController {
 
   @Post()
   handleMqttMessage(@Body() body: { routingKey: string, message: any }): Observable<any> {
+    console.log('Received POST request')
     return this.appService.sendMqttMessage(body);
   }
 }

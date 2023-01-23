@@ -35,7 +35,7 @@ export class RabbitMQTransporter extends Server implements CustomTransportStrate
         this.channel.bindQueue(queue, this.exchange, this.routingKey);
 
         this.channel.consume(queue, (msg) => {
-            console.log(`Received message: '${msg.content.toString()}'`);
+            console.log(`Received RabbitMQ message: '${msg.content.toString()}'`);
             this.channel.ack(msg, false);
             // }, { noAck: true })
         })
