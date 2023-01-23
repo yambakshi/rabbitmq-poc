@@ -1,4 +1,17 @@
 # RabbitMQ POC
+This is a POC of the following flow:
+1. A `POST` request is sent to the `MQTT` publisher (listening on `http://localhost:3000`).
+2. The `MQTT` publisher sends the body of the `POST` request as a `MQTT` message.
+3. The `RabbitMQ` publisher consumes the `MQTT` message and sends it as a `RabbitMQ` message.
+4. The `RabbitMQ` exchange (named `iot_events`) routes the message to the right queue based on the routing key.
+5. The `RabbitMQ` message is consumed by either the `Inventory Consumer` or the `Notifications Consumer`.
+
+The microservices in this demo are:
+- `MQTT` publisher - Acting both as REST API (listening on port 3000) and a `MQTT` publisher.
+- `RabbitMQ` publisher - Acting as both a `MQTT` consumer and a `RabbitMQ` publisher.
+- Inventory Consumer - A `RabbitMQ` consumer listening on queue `inventory_queue`.
+- Notifications Consumer - A `RabbitMQ` consumer listening on queue `notifications_queue`.
+
 ## Technologies
 - NestJS `9.0.0`
 - RabbitMQ `3.11.6`
@@ -45,7 +58,7 @@
    Default username is `guest` and default password is `guest`.
 
 ### 3. Microservices
-1. Clone `NestJS` starter code for consumer and publisher ([source](https://docs.nestjs.com/))
+1. Clone `NestJS` starter code for the consumers and publishers ([source](https://docs.nestjs.com/))
    ```
    git clone https://github.com/nestjs/typescript-starter.git mqtt-publisher
    git clone https://github.com/nestjs/typescript-starter.git rabbitmq-publisher
@@ -53,7 +66,7 @@
    git clone https://github.com/nestjs/typescript-starter.git notifications-consumer
    ```
 
-2. Install required `npm` packages in each microservice
+2. Install `npm` packages for each microservice
    ```
    cd nestjs/mqtt-publisher
    npm i
