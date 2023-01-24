@@ -1,28 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Channel } from 'amqp-connection-manager';
 import { connect } from 'amqplib';
 
 @Injectable()
 export class RabbitMQPublisher {
+    host: string;
     channel: Channel;
-    exchange: string;
+    exchangeName: string;
 
-    constructor() {
-        this.connect();
+    constructor(private configService: ConfigService) {
+        const rabbitMqConfig = this.configService.get<{ host: string, exchangeName: string }>('rabbitMq');
+        this.host = rabbitMqConfig.host;
+        this.exchangeName = rabbitMqConfig.exchangeName;
     }
 
     async connect(): Promise<void> {
-        const connection = await connect('amqp://localhost:5672');
+        const connection = await connect(this.host);
         console.log('Connected to RabbitMQ');
 
         this.channel = await connection.createChannel();
-        this.exchange = 'iot_events';
-        this.channel.assertExchange(this.exchange, 'topic', {
+        this.channel.assertExchange(this.exchangeName, 'topic', {
             durable: true
         });
     }
 
     publish({ routingKey, message }: { routingKey: string, message: any }): boolean {
-        return this.channel.publish(this.exchange, routingKey, Buffer.from(message));
+        return this.channel.publish(this.exchangeName, routingKey, Buffer.from(message));
     }
 }

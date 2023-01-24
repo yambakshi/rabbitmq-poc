@@ -7,7 +7,7 @@ import { AppService } from './app.service';
   imports: [
     ClientsModule.register([
       {
-        name: 'GREETING_SERVICE',
+        name: 'MQTT_SERVICE',
         transport: Transport.MQTT,
         options: {
           url: 'mqtt://localhost:1883',
