@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Channel } from 'amqp-connection-manager';
 import { connect } from 'amqplib';
 
@@ -9,10 +8,9 @@ export class RabbitMQPublisher {
     channel: Channel;
     exchangeName: string;
 
-    constructor(private configService: ConfigService) {
-        const rabbitMqConfig = this.configService.get<{ host: string, exchangeName: string }>('rabbitMq');
-        this.host = rabbitMqConfig.host;
-        this.exchangeName = rabbitMqConfig.exchangeName;
+    constructor({ host, exchangeName }: { host: string, exchangeName: string }) {
+        this.host = host;
+        this.exchangeName = exchangeName;
     }
 
     async connect(): Promise<void> {

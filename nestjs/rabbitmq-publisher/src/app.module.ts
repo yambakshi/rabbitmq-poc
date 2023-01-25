@@ -15,7 +15,8 @@ import { env } from './config';
     {
       provide: 'RABBITMQ_PUBLISHER',
       useFactory: async (configService: ConfigService) => {
-        const rabbitMQPublisher = new RabbitMQPublisher(configService);
+        const config = configService.get<{ host: string, exchangeName: string }>('rabbitMq');
+        const rabbitMQPublisher = new RabbitMQPublisher(config);
         await rabbitMQPublisher.connect();
         return rabbitMQPublisher;
       },
