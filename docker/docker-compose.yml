@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  rabbitmq:
+    container_name: rabbitmq-broker
+    ports:
+      # AMQP protocol port
+      - "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
+    environment:
+      - RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - messaging
+
+networks:
+  messaging:
+    driver: bridge

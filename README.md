@@ -14,7 +14,7 @@ The microservices in this demo are:
 
 ## Technologies
 - NestJS `9.0.0`
-- RabbitMQ `3.11.6`
+- RabbitMQ `3.11.7`
 - Mosquitto `2.0.15`
 - Docker `20.10.21`
 - Typescript `4.7.4`
@@ -50,12 +50,66 @@ The microservices in this demo are:
 ### 2. RabbitMQ
 1. Install `RabbitMQ` docker image ([source](https://hub.docker.com/_/rabbitmq))
    ```
-   docker run -d --name some-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+   docker run -d --name some-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.11.7-management
    ```
    
-2. Make sure `RabbitMQ` is installed correctly by going to `RabbitMQ` management on `http://localhost:15672`.
+2. Make sure `RabbitMQ` is installed correctly by going to `RabbitMQ` management on `http://localhost:15672` (default username and password are `guest`).
+   
+   Alternatively, you can open the `RabbitMQ` container terminal and run the following
+   ```
+   rabbitmqctl --version
+   ```
 
-   Default username is `guest` and default password is `guest`.
+   #### Custom Config & Definitions
+   In some cases you'd want to avoid asserting the queues and exchanges in the code and instead create the `RabbitMQ` container with pre-defined config and definitions.
+   > **NOTE:** Don't forget the remove all the redundant assertions from the code when using pre-defined config and definitions.
+   
+   First, if we were to create the default `RabbitMQ` container we would find the default config in the following folder in the container ([config example](https://github.com/rabbitmq/rabbitmq-server/blob/v3.8.x/deps/rabbit/docs/rabbitmq.conf.example)):
+   ```
+   /etc/rabbitmq/conf.d/10-defaults.conf
+   ```
+   
+   To see the default definitions go to `http://localhost:15672/api/definitions` in the browser or run:
+   ```
+   curl -u {username}:{password} -X GET http://{hostname}:15672/api/definitions
+   ```
+
+   Now, to create the `RabbitMQ` container with specific config and definitions, do the following:
+   1. `cd` into the **docker** folder and run
+      ```
+      docker compose up -d
+      ```
+      > **NOTE:** If a `RabbitMQ` image with the same version already exist (in our case `RabbitMQ` version `3.11.7`) `Docker` will create the container using that image. This is a problem because we need `Docker` to create a new image with the custom config and definitions we pass to it. To solve this, make sure you delete any existing `RabbitMQ` image with the same version as what we want to create before running the following.
+      
+      This command will:
+      1. Create a `RabbitMQ` container using the **docker-compose.yml** file.
+      2. The **docker-compose.yml** file will:
+         1. Set an envirnment variable called `RABBITMQ_CONFIG_FILE` in the container
+            ```
+            RABBITMQ_CONFIG_FILE=/etc/rabbitmq/rabbitmq.conf
+            ```
+          2. Use the **Dockerfile** as the receipe for the container
+       3. The **Dockerfile** will:
+          1. Copy the **rabbitmq.conf** to the `RabbitMQ` folder in the container
+           2. Copy the **definitions.json** to the `RAbbitMQ` folder in the container
+           
+   > **NOTE:** It is recommended to set the definitions after node startup (cluster can have multiple nodes) to avoid repetitive work ([source](https://www.rabbitmq.com/definitions.html))
+
+   **Update Config and Definitions**
+   - To change `RabbitMQ`'s config (`rabbitmq.conf`):
+      1. Stop the container and delete it
+      2. Delete the `RabbitMQ` image
+      3. Modify the `rabbitmq.conf` file
+      4. Run `docker compose up -d`
+
+   - To change `RabbitMQ`'s definitions (`definitions.json`):
+      1. Modifiy the `definitions.json` file
+      2. Update the container (the already exisiting definitions will **NOT** be overwritten but the diff will be added)
+         ```
+         curl -u {username}:{password} -H "Content-Type: application/json" -X POST -T definitions.json http://{hostname}:15672/api/definitions
+         ```
+         
+      > **NOTE:** The new definitions in the file will **NOT** overwrite anything already in the broker, only add to the existing defintions
 
 ### 3. Microservices
 1. Clone `NestJS` starter code for the consumers and publishers ([source](https://docs.nestjs.com/))
@@ -132,3 +186,5 @@ The microservices in this demo are:
 - [NPM - MQTT](https://www.npmjs.com/package/mqtt)
 - [NPM - AMQP Lib](https://www.npmjs.com/package/amqplib)
 - [NPM - AMQP Lib Types](https://www.npmjs.com/package/@types/amqplib)
+- [Schema Definition Export and Import
+](https://www.rabbitmq.com/definitions.html)
